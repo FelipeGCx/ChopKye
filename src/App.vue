@@ -28,11 +28,16 @@ onMounted(() => {
   <div v-if="messages.length > 0">
     <ul>
       <li v-for="(message, index) in messages" :key="index">
-        <MessageCard :message="message"/>
+        <MessageCard :message="message" />
       </li>
     </ul>
   </div>
-  a
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+</style>
