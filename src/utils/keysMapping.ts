@@ -3,10 +3,16 @@ const convertToCamel = (input: string): string => {
 };
 
 export const keysToCamel = (element: any): any => {
-  const camelKeys: { [key: string]: any } = {};
-  for (const key in element) {
-    const camelKey = convertToCamel(key);
-    camelKeys[camelKey] = element[key];
+  if (Array.isArray(element)) {
+    return element.map((item) => keysToCamel(item));
+  } else if (typeof element === "object" && element !== null) {
+    const camelKeys: { [key: string]: any } = {};
+    for (const key in element) {
+      const camelKey = convertToCamel(key);
+      camelKeys[camelKey] = keysToCamel(element[key]);
+    }
+    return camelKeys;
+  } else {
+    return element;
   }
-  return camelKeys;
 };
