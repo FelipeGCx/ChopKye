@@ -1,0 +1,9 @@
+export const STAFF = "staff";
+export const BROADCASTER = "broadcaster";
+export const PARTNER = "partner";
+export const MODERATOR = "moderator";
+export const VIP = "vip";
+export const TURBO = "turbo";
+export const SUBSCRIBER = "subscriber";
+export const BITS = "bits";
+export const ARTIST = "artist";
