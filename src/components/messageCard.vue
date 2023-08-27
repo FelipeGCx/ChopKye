@@ -34,6 +34,12 @@ onMounted(async () => {
     widthBox.value = messageBox.value.clientWidth;
   }
 });
+window.addEventListener("resize", (_e:any) => {
+  if (messageBox.value) {
+    heightBox.value = messageBox.value.clientHeight;
+    widthBox.value = messageBox.value.clientWidth;
+  }
+});
 </script>
 
 <template>
@@ -114,7 +120,7 @@ onMounted(async () => {
       height: 100%;
       z-index: 1;
       stroke-width: 1.5rem;
-      color:var(--sc);
+      color: var(--sc);
     }
     img {
       position: absolute;
