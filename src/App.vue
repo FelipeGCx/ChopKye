@@ -3,8 +3,8 @@ import { onMounted, ref } from "vue";
 import { CHANNEL_NAME } from "@/config";
 import tmi from "tmi.js";
 import { Message } from "@/types";
-import { keysToCamel } from "./utils/keysMapping";
-import MessageCard from "./components/messageCard.vue";
+import { keysToCamel } from "@/utils/keysMapping";
+import MessageCard from "@/components/messageCard.vue";
 const messages = ref<Message[]>([]);
 
 onMounted(() => {
@@ -32,6 +32,7 @@ onMounted(() => {
       </li>
     </ul>
   </div>
+  <RouterView />
 </template>
 
 <style scoped lang="scss">
