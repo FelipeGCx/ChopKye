@@ -1,0 +1,30 @@
+[
+  {
+    "keywords": ["hola", "hola!", "ola", "buenas"],
+    "key": "CMD_KEY_1"
+  },
+  {
+    "keywords": ["!valorant", "!nickvalo", "!valo", "!nickvalorant"],
+    "key": "CMD_KEY_2"
+  },
+  {
+    "keywords": ["!github", "!nickgithub"],
+    "key": "CMD_KEY_3"
+  },
+  {
+    "keywords": ["!chopkye"],
+    "key": "CMD_KEY_4"
+  },
+  {
+    "keywords": ["chopkye"],
+    "key": "CMD_KEY_5"
+  },
+  {
+    "keywords": ["!comandos"],
+    "key": "CMD_KEY_6"
+  },
+  {
+    "keywords": ["adios", "adiós", "chao", "nv", "nos vemos", "bonanit"],
+    "key": "CMD_KEY_7"
+  }
+]
