@@ -2,9 +2,11 @@
 import { onMounted } from "vue";
 import { AUTH_TOKEN, BOT_USERNAME, CHANNEL_NAME } from "../config";
 import tmi from "tmi.js";
+import { CommandsService } from "@/services/commands";
+import { DONT_TAG } from "@/constants";
 
 onMounted(() => {
-  console.log("no sé");
+  const cmds = new CommandsService();
   const opts = {
     identity: {
       username: BOT_USERNAME,
@@ -18,21 +20,21 @@ onMounted(() => {
   client.on("connected", onConnectedHandler);
   client.connect();
 
-  function onMessageHandler(target: any, _context: any, msg: string, self: any) {
-    console.log("llega")
+  function onMessageHandler(target: any, context: any, msg: string, self: any) {
     if (self) {
       return;
-    } // Ignore messages from the bot
-  
-    // Remove whitespace from chat message
+    }
     const commandName = msg.trim();
-  
-    // If the command is known, let's execute it
-    if (commandName === "!tic") {
-      client.say(target, "tac tou en tu cara");
-      console.log(`* Executed ${commandName} command`);
-    } else {
-      console.log(`* Unknown command ${commandName}`);
+    const responseMsg = cmds.getResponse(commandName);
+    if (responseMsg) {
+      const cmdKey = cmds.getCommandKey(commandName);
+      if (cmdKey) {
+        if (!DONT_TAG.includes(cmdKey)) {
+          client.say(target, `@${context.username} ${responseMsg}`);
+        } else {
+          client.say(target, responseMsg);
+        }
+      }
     }
   }
 
@@ -40,11 +42,4 @@ onMounted(() => {
     console.log(`* Connected to ${addr}:${port}`);
   }
 });
-
 </script>
-
-<template>
-  <div>
-    CHATBOT
-  </div>
-</template>
