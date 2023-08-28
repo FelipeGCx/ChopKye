@@ -6,6 +6,7 @@ import { Message } from "@/types";
 import { keysToCamel } from "@/utils/keysMapping";
 import MessageCard from "@/components/messageCard.vue";
 const messages = ref<Message[]>([]);
+const usersExcludes = ["chopkye", "streamelements", "nightbot"];
 
 onMounted(() => {
   const client = new tmi.Client({
@@ -14,12 +15,14 @@ onMounted(() => {
 
   client.connect();
 
-  client.on("message", (_channel: any, tags: any, message: any, _self: any) => {
-    let newMessage: Message = {
-      tags: keysToCamel(tags),
-      message: message,
-    };
-    messages.value = [...messages.value, newMessage];
+  client.on("message", (_channel: any, tags: any, message: string, _self: any) => {
+    if (!usersExcludes.includes(tags.username) && !message.startsWith("!") ) {
+      let newMessage: Message = {
+        tags: keysToCamel(tags),
+        message: message,
+      };
+      messages.value = [...messages.value, newMessage];
+    }
   });
 });
 </script>
