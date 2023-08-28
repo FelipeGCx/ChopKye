@@ -1,8 +1,9 @@
 import CommandResponses from "./responses.json";
 import Commands from "./commands.json";
+import { commandResponse, command } from "@/types";
 export class CommandsService {
-  responses = CommandResponses;
-  commands = Commands;
+  responses: commandResponse = CommandResponses;
+  commands: command[] = Commands;
 
   getResponse(command: string): string | null {
     const commandKey = this.getCommandKey(command);
