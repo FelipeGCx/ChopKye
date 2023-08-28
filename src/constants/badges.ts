@@ -6,4 +6,4 @@ export const VIP = "vip";
 export const TURBO = "turbo";
 export const SUBSCRIBER = "subscriber";
 export const BITS = "bits";
-export const ARTIST = "artist";
+export const ARTIST = "artistBadge";
