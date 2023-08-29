@@ -57,5 +57,6 @@ ul {
   gap: 0.8rem;
   height: 100vh;
   overflow-y: auto;
+  scrollbar-width: none;
 }
 </style>
