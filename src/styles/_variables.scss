@@ -1,4 +1,18 @@
-:root{
-    --pc: hsl(0, 0%, 12%);
-    --sc: hsl(0, 0%, 100%);
+:root {
+  --pc: hsl(0, 0%, 12%);
+  --sc: hsl(0, 0%, 100%);
+}
+
+@keyframes slide {
+  0% {
+    position: absolute;
+    left: 100%;
+  }
+  99% {
+    position: absolute;
+    left: 0%;
+  }
+  100% {
+    position: relative;
+  }
 }
