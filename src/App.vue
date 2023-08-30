@@ -2,7 +2,7 @@
 import { onMounted, onUnmounted, ref } from "vue";
 import { CHANNEL_NAME, TIME_DISPLAY_MESSAGE } from "@/config";
 import tmi from "tmi.js";
-import { Message, User } from "@/types";
+import { Message } from "@/types";
 import { keysToCamel } from "@/utils/keysMapping";
 import { ProductionProvider } from "@/services/requestAdapter/productionProvider";
 import { RequestService } from "@/services/requestAdapter/requestService";
@@ -50,6 +50,15 @@ const getUser = async (url: string) => {
   return keysToCamel(requestResponse.data[0]);
 };
 
+const intervalId = setInterval(() => {
+  if (messages.value.length > 0) {
+    messages.value.shift()
+  }
+}, TIME_DISPLAY_MESSAGE);
+
+onUnmounted(() => {
+  clearInterval(intervalId)
+});
 </script>
 
 <template>
