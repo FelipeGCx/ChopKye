@@ -1,13 +1,20 @@
 <script setup lang="ts">
 import BadgesList from "@/components/badgesList.vue";
+import { TIME_DISPLAY_MESSAGE } from "@/config";
 import { Message } from "@/types";
-import { onMounted, onUpdated, ref } from "vue";
+import { computed, onMounted, onUpdated, ref, watch } from "vue";
 
 interface Props {
   message: Message;
+  currentTime: number;
+}
+
+interface Emits {
+  (e: "hideMessage"): void;
 }
 
 const props = defineProps<Props>();
+const emit = defineEmits<Emits>();
 const messageBox = ref<HTMLElement | null>(null);
 const heightBox = ref<number | null>(null);
 const widthBox = ref<number | null>(null);
@@ -19,6 +26,16 @@ const viewBoxSet = () => {
     widthBox.value = messageBox.value.clientWidth;
   }
 };
+
+const timer = computed(() => {
+  return props.currentTime >= props.message.time + TIME_DISPLAY_MESSAGE;
+});
+
+watch(timer, (value: Boolean) => {
+  if (value) {
+    emit("hideMessage");
+  }
+});
 
 onMounted(() => {
   viewBoxSet();

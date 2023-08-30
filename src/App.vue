@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from "vue";
-import { CHANNEL_NAME, TIME_DISPLAY_MESSAGE } from "@/config";
+import { CHANNEL_NAME } from "@/config";
 import tmi from "tmi.js";
 import { Message } from "@/types";
 import { keysToCamel } from "@/utils/keysMapping";
@@ -10,6 +10,7 @@ import MessageCard from "@/components/messageCard.vue";
 const messages = ref<Message[]>([]);
 const usersExcludes = ["streamelements", "nightbot"];
 const listMessages = ref<HTMLUListElement>();
+const currentTime = ref();
 
 onMounted(() => {
   const client = new tmi.Client({
@@ -27,7 +28,8 @@ onMounted(() => {
         let newMessage: Message = {
           tags: keysToCamel(tags),
           message: message,
-          user:user
+          user: user,
+          time: Date.now(),
         };
         messages.value = [...messages.value, newMessage];
         // setTimeout(() => {
@@ -50,14 +52,19 @@ const getUser = async (url: string) => {
   return keysToCamel(requestResponse.data[0]);
 };
 
-const intervalId = setInterval(() => {
+const currentTimeInterval = setInterval(() => {
+  currentTime.value = Date.now();
+})
+
+const hideMessage = () => {
   if (messages.value.length > 0) {
-    messages.value.shift()
+    console.log("we delete the first message");
+    messages.value.shift();
   }
-}, TIME_DISPLAY_MESSAGE);
+};
 
 onUnmounted(() => {
-  clearInterval(intervalId)
+  clearInterval(currentTimeInterval);
 });
 </script>
 
@@ -65,7 +72,7 @@ onUnmounted(() => {
   <div v-if="messages.length > 0">
     <ul ref="listMessages">
       <li v-for="(message, index) in messages" :key="index">
-        <MessageCard :message="message" />
+        <MessageCard :message="message" :currentTime="currentTime" @hideMessage="hideMessage" />
       </li>
     </ul>
   </div>
