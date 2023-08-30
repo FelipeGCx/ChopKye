@@ -2,6 +2,7 @@ export type Message = {
   tags: Tags;
   message: string;
   user: User;
+  time: number;
 };
 export type Tags = {
   badgeInfo: null;
