@@ -116,6 +116,7 @@ window.addEventListener("resize", (_e: any) => {
   grid-template-columns: auto 1fr 1fr;
   width: 100%;
   gap: 0.6rem;
+  animation: slide .3s ease;
   picture {
     width: 3rem;
     aspect-ratio: 1/1;
