@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import { CHANNEL_NAME } from "@/config";
+import { onMounted, onUnmounted, ref } from "vue";
+import { CHANNEL_NAME, TIME_DISPLAY_MESSAGE } from "@/config";
 import tmi from "tmi.js";
-import { Message } from "@/types";
+import { Message, User } from "@/types";
 import { keysToCamel } from "@/utils/keysMapping";
+import { ProductionProvider } from "@/services/requestAdapter/productionProvider";
+import { RequestService } from "@/services/requestAdapter/requestService";
 import MessageCard from "@/components/messageCard.vue";
 const messages = ref<Message[]>([]);
-const usersExcludes = ["chopkye", "streamelements", "nightbot"];
+const usersExcludes = ["streamelements", "nightbot"];
 const listMessages = ref<HTMLUListElement>();
 
 onMounted(() => {
@@ -18,25 +20,36 @@ onMounted(() => {
 
   client.on(
     "message",
-    (_channel: any, tags: any, message: string, _self: any) => {
+    async (_channel: any, tags: any, message: string, _self: any) => {
       if (!usersExcludes.includes(tags.username) && !message.startsWith("!")) {
+        const url = `users?login=${tags.username}`;
+        const user = await getUser(url);
         let newMessage: Message = {
           tags: keysToCamel(tags),
           message: message,
+          user:user
         };
         messages.value = [...messages.value, newMessage];
-        setTimeout(() => {
-          if (listMessages.value) {
-            listMessages.value.scrollTo({
-              top: listMessages.value.offsetHeight,
-              behavior: "smooth",
-            });
-          }
-        }, 1000);
+        // setTimeout(() => {
+        //   if (listMessages.value) {
+        //     listMessages.value.scrollTo({
+        //       top: listMessages.value.offsetHeight,
+        //       behavior: "smooth",
+        //     });
+        //   }
+        // }, 1000);
       }
     }
   );
 });
+
+const getUser = async (url: string) => {
+  const requestProvider = new ProductionProvider();
+  const requestService = new RequestService(requestProvider);
+  const requestResponse = await requestService.getRequest(url);
+  return keysToCamel(requestResponse.data[0]);
+};
+
 </script>
 
 <template>

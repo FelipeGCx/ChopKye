@@ -1,49 +1,40 @@
 <script setup lang="ts">
-import { ProductionProvider } from "@/services/requestAdapter/productionProvider";
-import { RequestService } from "@/services/requestAdapter/requestService";
 import BadgesList from "@/components/badgesList.vue";
-import { Message, User } from "@/types";
-import { keysToCamel } from "@/utils/keysMapping";
-import { onMounted, ref } from "vue";
+import { Message } from "@/types";
+import { onMounted, onUpdated, ref } from "vue";
 
 interface Props {
   message: Message;
 }
 
 const props = defineProps<Props>();
-const user = ref<User>();
 const messageBox = ref<HTMLElement | null>(null);
 const heightBox = ref<number | null>(null);
 const widthBox = ref<number | null>(null);
 const path = props.message.tags.id;
 
-const getUser = async (url: string) => {
-  const requestProvider = new ProductionProvider();
-  const requestService = new RequestService(requestProvider);
-  const requestResponse = await requestService.getRequest(url);
-  if (requestResponse.data) {
-    user.value = keysToCamel(requestResponse.data[0]);
+const viewBoxSet = () => {
+  if (messageBox.value) {
+    heightBox.value = messageBox.value.clientHeight;
+    widthBox.value = messageBox.value.clientWidth;
   }
 };
 
-onMounted(async () => {
-  const url = `users?login=${props.message.tags.username}`;
-  await getUser(url);
-  if (messageBox.value) {
-    heightBox.value = messageBox.value.clientHeight;
-    widthBox.value = messageBox.value.clientWidth;
-  }
+onMounted(() => {
+  viewBoxSet();
 });
-window.addEventListener("resize", (_e:any) => {
-  if (messageBox.value) {
-    heightBox.value = messageBox.value.clientHeight;
-    widthBox.value = messageBox.value.clientWidth;
-  }
+
+onUpdated(async () => {
+  viewBoxSet();
+});
+
+window.addEventListener("resize", (_e: any) => {
+  viewBoxSet();
 });
 </script>
 
 <template>
-  <div v-if="user" class="card">
+  <div class="card">
     <picture>
       <svg viewBox="0 0 100 100">
         <path
@@ -63,7 +54,7 @@ window.addEventListener("resize", (_e:any) => {
           clip-path="url(#clipPathId)"
         />
       </svg>
-      <img :src="user.profileImageUrl" width="300" height="300" />
+      <img :src="props.message.user.profileImageUrl" width="300" height="300" />
     </picture>
     <h2 class="name">{{ props.message.tags.displayName }}</h2>
     <div class="badges">
