@@ -1,6 +1,7 @@
 export type Message = {
   tags: Tags;
   message: string;
+  user: User;
 };
 export type Tags = {
   badgeInfo: null;
