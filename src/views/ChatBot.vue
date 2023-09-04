@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import ChatOverlay from "@/components/chatOverlay.vue";
 import { onMounted } from "vue";
 import { AUTH_TOKEN, BOT_USERNAME, CHANNEL_NAME } from "../config";
 import tmi from "tmi.js";
@@ -43,4 +44,6 @@ onMounted(() => {
   }
 });
 </script>
-<template></template>
+<template>
+  <ChatOverlay />
+</template>
