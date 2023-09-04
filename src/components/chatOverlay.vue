@@ -30,15 +30,10 @@ onMounted(() => {
           user: user,
           time: Date.now(),
         };
+        if (messages.value.length > 3) {
+          hideMessage();
+        }
         messages.value = [...messages.value, newMessage];
-        // setTimeout(() => {
-        //   if (listMessages.value) {
-        //     listMessages.value.scrollTo({
-        //       top: listMessages.value.offsetHeight,
-        //       behavior: "smooth",
-        //     });
-        //   }
-        // }, 1000);
       }
     }
   );
@@ -53,7 +48,7 @@ const getUser = async (url: string) => {
 
 const currentTimeInterval = setInterval(() => {
   currentTime.value = Date.now();
-})
+});
 
 const hideMessage = () => {
   if (messages.value.length > 0) {
@@ -70,7 +65,11 @@ onUnmounted(() => {
   <div v-if="messages.length > 0">
     <ul ref="listMessages">
       <li v-for="(message, index) in messages" :key="index">
-        <MessageCard :message="message" :currentTime="currentTime" @hideMessage="hideMessage" />
+        <MessageCard
+          :message="message"
+          :currentTime="currentTime"
+          @hideMessage="hideMessage"
+        />
       </li>
     </ul>
   </div>
