@@ -4,3 +4,4 @@ export const CHANNEL_NAME = import.meta.env.VITE_CHANNEL_NAME as string;
 export const AUTH_TOKEN = import.meta.env.VITE_AUTH_TOKEN as string;
 export const TIME_DISPLAY_MESSAGE = parseInt(import.meta.env
   .VITE_TIME_DISPLAY_MESSAGE) as number;
+export const USERS_EXCLUDES = import.meta.env.VITE_USERS_EXCLUDES as Array<string>;
